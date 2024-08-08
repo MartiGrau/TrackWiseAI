@@ -1,17 +1,14 @@
 #!/bin/bash
 
 # Run the Python script with arguments
-python3 your_script.py \
-  --classes person \
-  --max_samples 10000 \
-  --export_dir ./yolov5-coco-datasets \
-  --models yolov8n yolov8s yolov8m \
-  --data_yaml ./yolov5-coco-datasets/dataset.yaml \
+python3 camera_detection/train_camera_detection.py \
+  --models yolov8m \
+  --data_yaml /hdd1/Datasets/Public/Raw/Human_Dataset/human-dataset/dataset.yaml \
   --epochs 50 \
   --imgsz 640 \
-  --device 0 \
+  --device '0' \
   --batch 8 \
-  --project ./training \
+  --project /hdd1/Checkpoints/TrackWiseAI/person_detection_v1 \
   --datatest \
     https://cdn.antaranews.com/cache/1200x800/2023/10/13/Pengendara-Sepeda-Motor-Trotoar-060323-aaa-5.jpg \
     https://img.harianjogja.com/posts/2022/11/14/1117643/jalur-pedestrian-malioboro.jpg \

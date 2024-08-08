@@ -30,6 +30,15 @@ pip install -r requirements.txt
 ```
 
 ## Usage
+### Prepare the Dataset
+Download a the Human Dataset from Kaggle and save it in the `data` directory. The dataset can be found [here](https://www.kaggle.com/datasets/fareselmenshawii/human-dataset/data).
+
+You can use the `download_person_dataset.py` script to download the dataset and save it in the `data` directory. Run the script with the following command:
+
+```bash
+python3 download_person_dataset.py
+```
+
 ### Tracking People in Video
 Ensure you have the YOLOv8 model weights and the video file you want to process.
 Run the tracking script with the appropriate arguments. Example:

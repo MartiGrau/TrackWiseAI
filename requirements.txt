@@ -1,4 +1,4 @@
 ultralytics
-fiftyone
 opencv-python
 matplotlib
+opendatasets

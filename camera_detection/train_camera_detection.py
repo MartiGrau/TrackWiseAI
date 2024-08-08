@@ -6,33 +6,6 @@ import argparse
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-# Function to load and filter dataset
-def load_and_filter_dataset(classes, max_samples):
-    datasets = foz.load_zoo_dataset('coco-2017', splits=('train', 'validation', 'test'), classes=classes, progress=True, max_samples=max_samples)
-
-    for sample in datasets:
-        if sample.ground_truth is None:
-            continue
-
-        # Filter detections to only include specified classes
-        detections = [detection for detection in sample.ground_truth.detections if detection.label in classes]
-        sample.ground_truth.detections = detections
-        sample.save()
-
-    return datasets
-
-# Function to export dataset splits
-def export_splits(datasets, export_dir, classes):
-    for split in ['train', 'validation', 'test']:
-        split_view = datasets.match_tags(split)
-        split_view.export(
-            export_dir=export_dir,
-            dataset_type=fo.types.YOLOv5Dataset,
-            label_field='ground_truth',
-            split=split,
-            classes=classes,
-        )
-
 # Function to train and validate YOLO models
 def train_and_validate_models(models, data_yaml, epochs, imgsz, device, batch, project, datatest):
     for model_name in models:
@@ -61,9 +34,6 @@ def train_and_validate_models(models, data_yaml, epochs, imgsz, device, batch, p
 # Main function to parse arguments and run the script
 def main():
     parser = argparse.ArgumentParser(description="Load, filter, export COCO-2017 dataset, and train YOLO models.")
-    parser.add_argument('--classes', type=str, nargs='+', default=['person'], help='Classes to filter in the dataset')
-    parser.add_argument('--max_samples', type=int, default=10000, help='Maximum number of samples to load')
-    parser.add_argument('--export_dir', type=str, default='./yolov5-coco-datasets', help='Directory to export the dataset')
     parser.add_argument('--models', type=str, nargs='+', default=['yolov8n', 'yolov8s', 'yolov8m'], help='List of YOLO models to train and validate')
     parser.add_argument('--data_yaml', type=str, default='./yolov5-coco-datasets/dataset.yaml', help='Path to the data YAML file')
     parser.add_argument('--epochs', type=int, default=50, help='Number of epochs for training')
@@ -80,8 +50,13 @@ def main():
 
     args = parser.parse_args()
 
-    datasets = load_and_filter_dataset(classes=args.classes, max_samples=args.max_samples)
-    export_splits(datasets, export_dir=args.export_dir, classes=args.classes)
+    # Check if the device is available
+    if args.device == '0' and torch.cuda.is_available():
+        device = 'cuda:0'
+    else:
+        device = 'cpu'
+    print(f"Device: {device}")
+
     train_and_validate_models(models=args.models, data_yaml=args.data_yaml, epochs=args.epochs, imgsz=args.imgsz, device=args.device, batch=args.batch, project=args.project, datatest=args.datatest)
 
 if __name__ == "__main__":
