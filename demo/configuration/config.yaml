@@ -1,0 +1,2 @@
+model_path: /hdd1/Checkpoints/TrackWiseAI/person_detection_v1/yolov8m/train/weights/best.pt
+model_device: cuda
