@@ -1,5 +1,5 @@
 import streamlit as st
-from app import tracking_page, company_page
+from app.pages import tracking_page, company_page, project_status_page
 import yaml
 from ultralytics import YOLO
 
@@ -13,24 +13,27 @@ def main():
 
     # Initialize session state for page if not already set
     if 'page' not in st.session_state:
-        st.session_state.page = 'tracking'  # Default to tracking page
+        st.session_state.page = 'project_status'  # Default to tracking page
 
     # -- sidebar -- #
     st.sidebar.title('TrackWiseAI')
-    st.sidebar.write("TrackWiseAI is an advanced computer vision and AI-based analytics system designed to enhance retail store operations by providing comprehensive insights into customer behavior. \
-    In this demo, we will be tracking people in a video using the YOLO model.")
+    st.sidebar.write("TrackWiseAI uses AI to analyze customer behavior in retail stores. This demo tracks people in videos using the YOLO model.")
 
     # -- Navigation -- #
-    if st.sidebar.button('Company Configuration'):
-        st.session_state.page = 'company'
-    elif st.sidebar.button('Tracking'):
+    if st.sidebar.button('📊 Project Status'):
+        st.session_state.page = 'project_status'
+    if st.sidebar.button('🎥 Tracking'):
         st.session_state.page = 'tracking'
+    if st.sidebar.button('⚙️ Company Configuration'):
+        st.session_state.page = 'company'
 
     # Run app
     if st.session_state.page == 'company':
         company_page.app()
     elif st.session_state.page == 'tracking':
         tracking_page.app(cfg, model)
+    elif st.session_state.page == 'project_status':
+        project_status_page.app()
 
 @st.cache_resource
 def load_config(config_path):
