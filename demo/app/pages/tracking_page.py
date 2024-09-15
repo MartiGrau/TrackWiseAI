@@ -1,10 +1,10 @@
 import streamlit as st
-from .tracking_algorithm import track_persons
+from ..tracking_algorithm import track_persons
 import tempfile
 import cv2
 import time
 import io
-from .analytics import people_detected_over_time
+from ..analytics import people_detected_over_time
 import json
 
 def app(cfg, model):
