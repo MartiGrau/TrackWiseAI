@@ -1,5 +1,5 @@
 import streamlit as st
-from app.pages import tracking_page, company_page, project_status_page
+from app.pages import tracking_page, company_page, project_status_page, tracking_pro_page, tracking_pro_page_fake
 import yaml
 from ultralytics import YOLO
 
@@ -24,6 +24,8 @@ def main():
         st.session_state.page = 'project_status'
     if st.sidebar.button('🎥 Tracking'):
         st.session_state.page = 'tracking'
+    if st.sidebar.button('🎥 Tracking PRO'):
+        st.session_state.page = 'tracking_pro'
     if st.sidebar.button('⚙️ Company Configuration'):
         st.session_state.page = 'company'
 
@@ -32,6 +34,8 @@ def main():
         company_page.app()
     elif st.session_state.page == 'tracking':
         tracking_page.app(cfg, model)
+    elif st.session_state.page == 'tracking_pro':
+        tracking_pro_page_fake.app()  # Assuming tracking_pro uses the same app function
     elif st.session_state.page == 'project_status':
         project_status_page.app()
 
